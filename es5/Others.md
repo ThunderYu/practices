@@ -38,7 +38,8 @@ writable
 get 
     一个给属性提供 getter 的方法，如果没有 getter 则为 undefined。方法将返回用作属性的值。默认为 undefined。
 set
-    一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将收到作为唯一参数的新值分配给属性。默认为 undefined。
+    一个给属性提供 setter 的方法，如果没有 setter 则为 undefined。该方法将收到作为唯一参数的新值分配给属性。
+    默认为 undefined。
 ```
 
 数据描述符包括两个属性 : `value` 属性以及 `writable` 属性，第一个属性用来声明当前欲修饰的属性的值，第二个属性用来声明当前对象是否可写即是否可以修改
@@ -46,5 +47,47 @@ set
 存取描述符就包括 `get` 与 `set` 属性用来声明欲修饰的象属性的 `getter` 及 `setter`
 
 属性描述符内部，数据描述符与存取描述符只能存在其中之一，但是不论使用哪个描述符都可以同时设置 `configurable` 属性以及`enumerable` 属性。
-`configurable`属性用来声明欲修饰的属性是否能够配置，仅有当其值为 `true` 时，被修饰的属性才有可能能够被删除，或者重新配置。
+`configurable` 属性用来声明欲修饰的属性是否能够配置，仅有当其值为 `true` 时，被修饰的属性才有可能能够被删除，或者重新配置。
 `enumerable` 属性用来声明欲修饰属性是否可以被枚举。
+
+> 参考代码
+
+```javascript
+var obj = {};
+Object.defineProperty(obj, "name", {
+	enumerable: true,
+	configurable: true,
+	set: function(val) {
+		log("set name to -> " + val);
+	},
+	get: function() {
+		log("get name value");
+	}
+});
+obj.name;//get name value
+obj.name = 2;//set name to -> 2
+delete obj.name;//true
+
+var obj2 = {};
+Object.defineProperties(obj2, {
+	name: {
+		value: "Harry",
+		writable: false,
+        enumerable: false
+	},
+	sex: {
+		enumerable: true,
+		configurable: true,
+		set: function(val) {
+			log("set sex");
+		},
+		get: function() {
+			log("get sex");
+		}
+	}
+});
+obj2.name;//Harry
+obj2.name = 2;//NOT CHANGE
+delete obj2.name;//false
+for(var i in obj2){console.log(i);}//sex
+```
