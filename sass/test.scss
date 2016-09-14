@@ -1,0 +1,25 @@
+/* normal variable and default variable  */
+$baseFont: Microsoft Yahei;
+
+$baseFontSize: 14px;
+$baseFontSize: 12px !default;
+
+body {
+	font: $baseFont;
+	font-size: $baseFontSize;
+}
+
+
+/* local variable and global variable */
+$color: red;
+
+.block {
+	color: $color;
+}
+
+em {
+	$color: green;
+	a {
+		color: $color;
+	}
+}
